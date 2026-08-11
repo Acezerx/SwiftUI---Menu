@@ -3,6 +3,8 @@ import SwiftUI
 struct ContentView: View {
 
     @State private var showHome = true
+    @StateObject private var menuData = MenuData()
+    
 
     var body: some View {
 
@@ -25,8 +27,9 @@ struct ContentView: View {
                         .tabItem {
                             Label("Food", systemImage: "fork.knife")
                         }
-                }
+                }.environmentObject(menuData)
         }
+        
     }
 }
 
