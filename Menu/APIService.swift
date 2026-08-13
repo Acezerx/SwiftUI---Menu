@@ -17,7 +17,7 @@ class APIService {
         
         let url = URL(
             string: "https://www.themealdb.com/api/json/v1/1/search.php?s=\(encodedName)"
-        )!
+        )!  
         
         let (data, _) = try await URLSession.shared.data(from: url)
         

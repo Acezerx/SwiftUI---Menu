@@ -27,6 +27,11 @@ struct ContentView: View {
                         .tabItem {
                             Label("Food", systemImage: "fork.knife")
                         }
+                    
+                    Camera()
+                        .tabItem {
+                            Label("Camera", systemImage: "camera")
+                        }
                 }.environmentObject(menuData)
         }
         
