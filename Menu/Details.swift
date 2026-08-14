@@ -16,7 +16,8 @@ struct Details: View {
     @EnvironmentObject var menuData: MenuData
     @State private var meal: Meal?
     @State private var apiError = false
-    
+    @State private var quantity = 1
+    @State private var showCart = false
     
     var body: some View {
         ScrollView {
@@ -27,15 +28,70 @@ struct Details: View {
                     .scaledToFit()
                     .frame(width: 400, height: 400)
                 
-                Text(item.title)
-                    .font(.largeTitle)
+                HStack (spacing:30){
+                    Text(item.title)
+                        .font(.largeTitle)
+    
+                    
                 
-                Text(item.subtitle)
-                    .font(.headline)
-                    .foregroundColor(.gray)
+                    HStack(spacing: 25) {
+                        
+                        Button {
+                            if quantity > 1 {
+                                quantity -= 1
+                            }
+                        } label: {
+                            Image(systemName: "minus")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                        }
+                        
+                        Text("\(quantity)")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .frame(minWidth: 30)
+                        
+                        Button {
+                            quantity += 1
+                        } label: {
+                            Image(systemName: "plus")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                        }
+                    }
+                    .padding(.vertical, 8)
+                }
+                
+                HStack(spacing: 20) {
+                    Text(item.subtitle)
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                    Text(String(format: "€%.2f", item.price))
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                }
                 Text(item.description)
                     .font(Font.body.monospacedDigit())
                     .multilineTextAlignment(.center)
+                
+                Button {
+                    menuData.addToCart(
+                        item: item,
+                        quantity: quantity
+                    )
+                    quantity = 1
+                } label: {
+                    Text("Order")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                }
+                .padding(.horizontal)
+                
+                Spacer()
                 
                 TextField("Write a comment", text: $comment)
                     .textFieldStyle(.roundedBorder)
@@ -103,6 +159,32 @@ struct Details: View {
                     .padding(.top, 15)
             }
             
+        }.toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showCart = true
+                } label: {
+                    ZStack(alignment: .topTrailing) {
+                        
+                        Image(systemName: "cart")
+                            .font(.title2)
+                        
+                        if menuData.cartCount > 0 {
+                            Text("\(menuData.cartCount)")
+                                .font(.caption2)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .frame(width: 18, height: 18)
+                                .background(Color.red)
+                                .clipShape(Circle())
+                                .offset(x: 8, y: -8)
+                        }
+                    }
+                }
+            }
+        }
+        .navigationDestination(isPresented: $showCart) {
+            CartView()
         }
     }
         
@@ -114,7 +196,8 @@ struct Details: View {
             image: "coffee",
             title: "Coffee",
             subtitle: "Energetic boost",
-            description: "A warm and flavorful drink."
+            description: "A warm and flavorful drink.",
+            price: 10.99
         )
     )
     .environmentObject(MenuData())

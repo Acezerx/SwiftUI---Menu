@@ -1,3 +1,11 @@
+//
+//  Details.swift
+//  Menu
+//
+//  Created by NCAdevice1 on 24/07/2026.
+//
+
+
 import SwiftUI
 
 struct ContentView: View {

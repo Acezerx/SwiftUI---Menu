@@ -12,6 +12,7 @@ struct Rows: View {
     let image: String
     let title: String
     let subtitle: String
+    let price: Double
     
     
     var body: some View {
@@ -31,7 +32,14 @@ struct Rows: View {
                 Text(subtitle)
                     .font(.subheadline)
                     .foregroundColor(.gray)
+                
+                Text(String(format: "€%.2f", price))
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                
+                
             }
+            
 
             Spacer()
         }
