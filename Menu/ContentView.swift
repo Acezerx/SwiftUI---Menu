@@ -18,20 +18,20 @@ struct ContentView: View {
                 
                 TabView {
                     
-                    Drinks()
-                        .tabItem {
-                            Label("Drinks", systemImage: "cup.and.saucer.fill")
-                        }
-                    
-                    Food()
-                        .tabItem {
-                            Label("Food", systemImage: "fork.knife")
-                        }
+                    NavigationStack {
+                            Menu()
+                                    }.tabItem {
+                                    Label("Menu", systemImage: "menucard")
+                                }
                     
                     Camera()
                         .tabItem {
                             Label("Camera", systemImage: "camera")
                         }
+                    Location()
+                        .tabItem {
+                            Label("Location",  systemImage:"location")
+                                 }
                 }.environmentObject(menuData)
         }
         
