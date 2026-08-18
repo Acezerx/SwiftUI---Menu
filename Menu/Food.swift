@@ -9,6 +9,8 @@ import SwiftUI
 
 struct Food: View {
     
+    @EnvironmentObject var menuData: MenuData
+    
     let food = [
         MenuItem(
             image: "burger",
@@ -89,6 +91,28 @@ struct Food: View {
                         
                     
                         )
+                    }
+                }
+            }.toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        CartView()
+                    } label: {
+                        ZStack(alignment: .topTrailing) {
+                            Image(systemName: "cart")
+                                .font(.title2)
+                            
+                            if menuData.cartCount > 0 {
+                                Text("\(menuData.cartCount)")
+                                    .font(.caption2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .frame(minWidth: 18, minHeight: 18)
+                                    .background(Color.red)
+                                    .clipShape(Circle())
+                                    .offset(x: 8, y: -8)
+                            }
+                        }
                     }
                 }
             }
